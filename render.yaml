@@ -1,0 +1,22 @@
+# Blueprint для Render.com: Web Service із постійним диском для SQLite
+services:
+  - type: web
+    name: fitzone
+    runtime: node
+    plan: starter            # диск доступний лише на платних планах; на free база скидається при перезапуску
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 22.13.0
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DB_PATH
+        value: /var/data/fitzone.db
+    disk:
+      name: fitzone-data
+      mountPath: /var/data
+      sizeGB: 1
